@@ -1,0 +1,207 @@
+git add .
+git commit -m "Pesan commit cepat"<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cute Drawing Supplies Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka One', cursive;
+            background: linear-gradient(135deg, #ffe6f7, #e6f7ff, #fff9e6);
+            min-height: 100vh;
+        }
+        .cute-shadow {
+            box-shadow: 0 4px 8px rgba(255, 182, 193, 0.3);
+        }
+        .star-rating {
+            color: #ffd700;
+        }
+        .wishlist-item {
+            background: #fff0f5;
+            border-radius: 20px;
+            padding: 10px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div id="login-page" class="max-w-md mx-auto bg-white rounded-3xl p-6 cute-shadow">
+        <h1 class="text-3xl text-center text-pink-500 mb-4">🌈 Welcome to Cute Drawing Supplies! 🎨</h1>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" class="w-full p-3 mb-3 border-2 border-pink-200 rounded-full" required>
+            <input type="password" id="password" placeholder="Password" class="w-full p-3 mb-3 border-2 border-pink-200 rounded-full" required>
+            <button type="submit" class="w-full bg-pink-400 text-white py-3 rounded-full hover:bg-pink-500 transition">Login ✨</button>
+        </form>
+    </div>
+
+    <div id="chart-page" class="hidden max-w-4xl mx-auto bg-white rounded-3xl p-6 cute-shadow mt-8">
+        <h1 class="text-3xl text-center text-purple-500 mb-4">🛍️ Cute Drawing Supplies Catalog 🛒</h1>
+        <p class="text-center mb-4">Welcome, <span id="user-info"></span>! Browse and add to your wishlist!</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-pink-100 p-4 rounded-2xl cute-shadow">
+                <h2 class="text-xl text-pink-600">Colorful Pencils</h2>
+                <p class="text-gray-600">Price: $5.99</p>
+                <div class="star-rating">⭐⭐⭐⭐⭐ (5/5)</div>
+                <button class="add-to-wishlist mt-2 bg-pink-400 text-white px-4 py-2 rounded-full hover:bg-pink-500">Add to Wishlist ❤️</button>
+            </div>
+            <div class="bg-blue-100 p-4 rounded-2xl cute-shadow">
+                <h2 class="text-xl text-blue-600">Sketchbook</h2>
+                <p class="text-gray-600">Price: $8.99</p>
+                <div class="star-rating">⭐⭐⭐⭐ (4/5)</div>
+                <button class="add-to-wishlist mt-2 bg-blue-400 text-white px-4 py-2 rounded-full hover:bg-blue-500">Add to Wishlist ❤️</button>
+            </div>
+            <div class="bg-yellow-100 p-4 rounded-2xl cute-shadow">
+                <h2 class="text-xl text-yellow-600">Watercolors</h2>
+                <p class="text-gray-600">Price: $12.99</p>
+                <div class="star-rating">⭐⭐⭐⭐⭐ (5/5)</div>
+                <button class="add-to-wishlist mt-2 bg-yellow-400 text-white px-4 py-2 rounded-full hover:bg-yellow-500">Add to Wishlist ❤️</button>
+            </div>
+            <div class="bg-green-100 p-4 rounded-2xl cute-shadow">
+                <h2 class="text-xl text-green-600">Markers</h2>
+                <p class="text-gray-600">Price: $7.99</p>
+                <div class="star-rating">⭐⭐⭐⭐ (4/5)</div>
+                <button class="add-to-wishlist mt-2 bg-green-400 text-white px-4 py-2 rounded-full hover:bg-green-500">Add to Wishlist ❤️</button>
+            </div>
+        </div>
+        <button id="toggle-wishlist" class="w-full bg-purple-400 text-white py-3 rounded-full hover:bg-purple-500 transition mb-4">View Wishlist 💖</button>
+        <div id="wishlist-section" class="hidden">
+            <h2 class="text-2xl text-center text-purple-500 mb-4">Your Wishlist 💖</h2>
+            <div id="wishlist" class="bg-purple-100 p-4 rounded-2xl">
+                <p id="empty-wishlist" class="text-center text-gray-500">No items yet! Add some cute supplies! 🎉</p>
+            </div>
+            <button id="buy-all" class="mt-4 w-full bg-orange-400 text-black py-3 rounded-full hover:bg-orange-500 transition hidden">Buy All 🛒</button>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const loginPage = document.getElementById('login-page');
+        const chartPage = document.getElementById('chart-page');
+        const userInfo = document.getElementById('user-info');
+        const toggleWishlist = document.getElementById('toggle-wishlist');
+        const wishlistSection = document.getElementById('wishlist-section');
+        const wishlist = document.getElementById('wishlist');
+        const emptyWishlist = document.getElementById('empty-wishlist');
+        const buyAllBtn = document.getElementById('buy-all');
+
+        // Login redirect to catalog
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            userInfo.textContent = `Username: ${username}`;
+            loginPage.classList.add('hidden');
+            chartPage.classList.remove('hidden');
+        });
+
+        // Toggle wishlist visibility
+        toggleWishlist.addEventListener('click', () => {
+            if (wishlistSection.classList.contains('hidden')) {
+                wishlistSection.classList.remove('hidden');
+                toggleWishlist.textContent = 'Hide Wishlist 🙈';
+            } else {
+                wishlistSection.classList.add('hidden');
+                toggleWishlist.textContent = 'View Wishlist 💖';
+            }
+        });
+
+        // Add to wishlist
+        document.querySelectorAll('.add-to-wishlist').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const itemDiv = e.target.parentElement;
+                const itemName = itemDiv.querySelector('h2').textContent;
+                const priceText = itemDiv.querySelector('p').textContent;
+                const price = parseFloat(priceText.replace('Price: $', ''));
+                const rating = itemDiv.querySelector('.star-rating').textContent;
+
+                // Check if item already in wishlist
+                let existingItem = Array.from(wishlist.children).find(child => 
+                    child.querySelector('.item-name') && child.querySelector('.item-name').textContent === itemName
+                );
+
+                if (existingItem) {
+                    // Increment quantity
+                    const qtySpan = existingItem.querySelector('.quantity');
+                    const totalSpan = existingItem.querySelector('.total-price');
+                    let qty = parseInt(qtySpan.textContent);
+                    qty++;
+                    qtySpan.textContent = qty;
+                    totalSpan.textContent = `Total: $${(price * qty).toFixed(2)}`;
+                } else {
+                    // Add new item
+                    const wishlistItem = document.createElement('div');
+                    wishlistItem.className = 'wishlist-item flex justify-between items-center';
+                    wishlistItem.innerHTML = `
+                        <div>
+                            <span class="item-name font-bold">${itemName}</span> - ${rating}<br>
+                            <span>Qty: <span class="quantity">1</span></span> - <span class="total-price">Total: $${price.toFixed(2)}</span>
+                        </div>
+                        <div>
+                            <button class="add-more bg-green-400 text-white px-2 py-1 rounded-full mr-2 hover:bg-green-500">Add More ➕</button>
+                            <button class="reduce bg-yellow-400 text-white px-2 py-1 rounded-full mr-2 hover:bg-yellow-500">Reduce ➖</button>
+                            <button class="delete-item bg-red-400 text-white px-2 py-1 rounded-full hover:bg-red-500">Delete ❌</button>
+                        </div>
+                    `;
+                    wishlist.appendChild(wishlistItem);
+                    emptyWishlist.style.display = 'none';
+                    buyAllBtn.classList.remove('hidden');
+
+                    // Add more
+                    wishlistItem.querySelector('.add-more').addEventListener('click', () => {
+                        const qtySpan = wishlistItem.querySelector('.quantity');
+                        const totalSpan = wishlistItem.querySelector('.total-price');
+                        let qty = parseInt(qtySpan.textContent);
+                        qty++;
+                        qtySpan.textContent = qty;
+                        totalSpan.textContent = `Total: $${(price * qty).toFixed(2)}`;
+                    });
+
+                    // Reduce
+                    wishlistItem.querySelector('.reduce').addEventListener('click', () => {
+                        const qtySpan = wishlistItem.querySelector('.quantity');
+                        const totalSpan = wishlistItem.querySelector('.total-price');
+                        let qty = parseInt(qtySpan.textContent);
+                        if (qty > 1) {
+                            qty--;
+                            qtySpan.textContent = qty;
+                            totalSpan.textContent = `Total: $${(price * qty).toFixed(2)}`;
+                        } else {
+                            wishlist.removeChild(wishlistItem);
+                            if (wishlist.children.length === 1) {
+                                emptyWishlist.style.display = 'block';
+                                buyAllBtn.classList.add('hidden');
+                            }
+                        }
+                    });
+
+                    // Delete
+                    wishlistItem.querySelector('.delete-item').addEventListener('click', () => {
+                        wishlist.removeChild(wishlistItem);
+                        if (wishlist.children.length === 1) {
+                            emptyWishlist.style.display = 'block';
+                            buyAllBtn.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Buy all
+        buyAllBtn.addEventListener('click', () => {
+            alert('Thank You! 🎉.');
+            // Clear wishlist
+            while (wishlist.children.length > 1) {
+                wishlist.removeChild(wishlist.lastChild);
+            }
+            emptyWishlist.style.display = 'block';
+            buyAllBtn.classList.add('hidden');
+            // Hide wishlist section after purchase
+            wishlistSection.classList.add('hidden');
+            toggleWishlist.textContent = 'View Wishlist 💖';
+        });
+    </script>
+</body>
+</html>
